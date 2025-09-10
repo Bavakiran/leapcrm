@@ -15,7 +15,7 @@ def run():
         # 1️⃣ Login
         login(page, EMAIL, PASSWORD)
 
-        # 2️⃣ Handle DNC pools
+        # 2️⃣ Handle DNC pools (with Foreign Pool logic merged)
         handle_dnc_pools(page)
 
         # 3️⃣ Run Employee Monitoring (Sign Out + TEST VANI BOT iframe)
@@ -27,7 +27,8 @@ def run():
         # 5️⃣ Stay on Dashboard until user manually clicks Sign Out
         print("✅ Script finished. Browser will stay open until you click Sign Out on Dashboard.")
         try:
-            page.locator("a[onclick*='Logoff']").wait_for(state="detached")  # Wait until Sign Out clicked
+            # Wait until Sign Out is clicked (detached from DOM)
+            page.locator("a[onclick*='Logoff']").wait_for(state="detached", timeout=0)
             print("✅ Sign Out detected, browser will close and land on login page.")
         except:
             print("⚠️ Sign Out not detected, closing browser anyway...")
