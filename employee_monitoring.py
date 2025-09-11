@@ -28,7 +28,6 @@ def employee_monitoring(page: Page):
         if bav_td.is_visible(timeout=3000):
             bav_tr = bav_td.locator("xpath=ancestor::tr").first
             row_texts = bav_tr.locator("td").all_inner_texts()
-            print("📌 Bavakiran Row:")
             print(" | ".join(row_texts))
         else:
             print("⚠️ Bavakiran not found on Employee Sign Out page")
@@ -58,8 +57,21 @@ def employee_monitoring(page: Page):
         new_tab.wait_for_load_state("domcontentloaded")
         print("✅ TEST VANI BOT opened in new tab/window")
 
+        # 🔍 Check for <h1>Voice Bot Call Interface</h1>
+        try:
+            h1_el = new_tab.locator("h1:has-text('Voice Bot Call Interface')")
+            if h1_el.is_visible(timeout=5000):
+                print("✅ 'Voice Bot Call Interface' header found in new tab")
+            else:
+                print("❌ 'Voice Bot Call Interface' header NOT found in new tab")
+        except:
+            print("❌ Error checking for 'Voice Bot Call Interface' header")
+
+        # Close new tab
         new_tab.close()
         print("✅ TEST VANI BOT tab closed")
+
+        # Switch back to parent Dashboard tab
         main_page.bring_to_front()
         print("✅ Switched back to main Dashboard tab")
     except Exception:

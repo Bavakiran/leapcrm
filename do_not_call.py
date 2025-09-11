@@ -24,6 +24,9 @@ def handle_dnc_pools(page: Page):
         "WHATSAPP Review Pool": ["p.card-text.subheading a"],
     }
 
+    # Pools where OfferId is NOT available
+    no_offer_id_pools = {"Email BL Campaign", "Self Evaluation Pool"}
+
     # ---------------- Helper Functions ----------------
     def extract_offer_id(raw_text: str) -> str | None:
         if not raw_text:
@@ -33,6 +36,10 @@ def handle_dnc_pools(page: Page):
 
     def print_offer_id(pool_name: str):
         """Fetch and print OfferId based on pool-specific locator(s)."""
+        if pool_name in no_offer_id_pools:
+            print(f"ℹ️ Skipping OfferId fetch for {pool_name} (not applicable)")
+            return
+
         if pool_name == "MergePool":
             # MergePool → search across all pools' locators
             found = False
@@ -68,7 +75,10 @@ def handle_dnc_pools(page: Page):
                         return
             except:
                 continue
-        print(f"⚠️ No OfferId found on {pool_name}")
+
+        # Only print warning if it's not a skipped pool
+        if pool_name not in no_offer_id_pools:
+            print(f"⚠️ No OfferId found on {pool_name}")
 
     def safe_go_back(pool_name: str):
         print(f"↩️ Returning to Dashboard from {pool_name}...")
@@ -83,7 +93,7 @@ def handle_dnc_pools(page: Page):
 
     # ---------------- Pool Handling ----------------
     for i, pool_name in enumerate(dnc_pools, start=1):
-        print(f"👉 ({i}/{len(dnc_pools)}) Clicking {pool_name}...")
+        print(f"👉 Clicking {pool_name}...")
 
         if pool_name == "MergePool":
             with page.expect_navigation(timeout=60000):
@@ -136,6 +146,6 @@ def handle_dnc_pools(page: Page):
             safe_go_back(pool_name)
             continue
 
-        # Normal pools → OfferId search
+        # Normal pools → OfferId search (skips excluded pools automatically)
         print_offer_id(pool_name)
         safe_go_back(pool_name)
