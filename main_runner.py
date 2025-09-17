@@ -14,15 +14,15 @@ def run():
 
         # 1️⃣ Login
         login(page, EMAIL, PASSWORD)
-
-        # 2️⃣ Handle DNC pools (with Foreign Pool logic merged)
+        
+        # 2️⃣ Handle Dashboard Tabs (Latest Briefings & Training Videos)
+        dashboard_tabs(page)
+        
+        # 3️⃣ Handle DNC pools (with Foreign Pool logic merged)
         handle_dnc_pools(page)
 
-        # 3️⃣ Run Employee Monitoring (Sign Out + TEST VANI BOT iframe)
+        # 4️⃣ Run Employee Monitoring (Sign Out + TEST VANI BOT iframe)
         employee_monitoring(page)
-
-        # 4️⃣ Handle Dashboard Tabs (Latest Briefings & Training Videos)
-        dashboard_tabs(page)
 
         # 5️⃣ Stay on Dashboard until user manually clicks Sign Out
         print("✅ Script finished. Browser will stay open until you click Sign Out on Dashboard.")

@@ -28,7 +28,6 @@ def employee_monitoring(page: Page):
         if bav_td.is_visible(timeout=3000):
             bav_tr = bav_td.locator("xpath=ancestor::tr").first
             row_texts = bav_tr.locator("td").all_inner_texts()
-            print("👤 Bavakiran Row:")
             print(" | ".join(row_texts))
         else:
             print("⚠️ Bavakiran not found on Employee Sign Out page")
